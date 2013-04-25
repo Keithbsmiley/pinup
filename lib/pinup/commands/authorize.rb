@@ -5,10 +5,7 @@ require 'netrc'
 
 module Pinup
   class Authorize
-    def self.authorize(options)
-      p options
-      puts 'authorizerrr'
-
+    def self.authorize_command(options)
       if options[:netrc]
         authorize_netrc(options)
       else
@@ -16,15 +13,13 @@ module Pinup
       end
     end
 
-    def self.authorize_netrc(options)
-      path = options[:path]
-      if path
-        path = File.expand_path(path)
-        netrc = Netrc.read(path)
-      else
-        netrc = Netrc.read
+    def self.authorize_netrc(options = {})
+      path = DEFAULT_NETRC
+      if options[:path]
+        path = File.expand_path(options[:path])
       end
 
+      netrc = Netrc.read(path)
       username, password = netrc[PINBOARD_URL]
       if username.nil? || password.nil?
         puts "Couldn't read credentials from #{ path }".red
@@ -39,18 +34,21 @@ module Pinup
       end
 
       token = Pinup::Settings.token(username, password)
+      puts token
       parameters = JSON_PARAMS
       parameters[:auth_token] = token
-      response = authorize(parameters)
+      response = authorize({ params: parameters })
 
       if response.code != '200'
         puts "Invalid user credentials in #{ path }".red
-        exit_now!(nil)
+        return nil
       elsif !path.nil? && DEFAULT_NETRC != path
         Pinup::Settings.write_settings({path: path})
       else
         Pinup::Settings.clear_settings
       end
+
+      return true
     end
 
     def self.authorize_credentials(options)
