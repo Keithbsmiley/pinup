@@ -1,7 +1,6 @@
 require_relative '../spec_helper'
 
 describe Pinup::Settings do
-
   before do
     @path = File.expand_path('~/netrc_test')
     @settings_path = File.expand_path('~/.pinup')

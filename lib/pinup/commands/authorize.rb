@@ -35,7 +35,7 @@ module Pinup
               password apitoken
         
               NOTE: Just include the digits from the API token for the password'.yellow
-        exit_now!(nil)
+        return nil
       end
 
       token = Pinup::Settings.token(username, password)
@@ -63,7 +63,7 @@ module Pinup
 
       if response.code != '200'
         puts 'Invalid user credentials'.red
-        exit_now!(nil)
+        return nil
       else
         Pinup::Settings.save_token({path: path})
       end
