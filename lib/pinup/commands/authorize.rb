@@ -1,3 +1,6 @@
+require 'net/https'
+require 'uri'
+require 'json'
 require 'netrc'
 
 module Pinup
@@ -23,15 +26,36 @@ module Pinup
       end
 
       username, password = netrc[PINBOARD_URL]
-      if username.nil? || password.nil?
+      p username
+      p password
+      if username.nil? && password.nil?
         puts "Couldn't read credentials from #{ path }".red
-        puts "Correct netrc syntax looks like:
+        puts "Valid netrc syntax for pinboard looks like:
 
             machine pinboard.in
-              login email@foo.com
-              password mysekret
+              password username:apitoken
           ".yellow
         exit_now!(nil)
+      end
+
+      if username.nil?
+        # has token
+      else
+        # has user and pass
+        uri = URI.parse("#{ API_URL }/user/api_token?format=json")
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        # http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        request = Net::HTTP::Get.new(uri.request_uri)
+        p uri.request_uri
+        p uri.to_s
+        request.basic_auth(username, password)
+        response = http.request(request)
+        p response.code
+        p response.body
+        p JSON.parse(response.body)
+        p response.body.class
       end
 
       p netrc
