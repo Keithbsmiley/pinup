@@ -77,7 +77,7 @@ module Pinup
     end
 
     def self.token(username, password)
-      if username.nil? || password.nil?
+      if username.nil? || password.nil? || username.empty? || password.empty?
         return nil
       end
 

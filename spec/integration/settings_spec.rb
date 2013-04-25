@@ -158,4 +158,47 @@ describe Pinup::Settings do
       end
     end
   end
+
+  describe 'clear_settings' do
+    describe 'if there is a settings file' do
+      before do
+        @settings = ""
+        Pinup::Settings.write_settings(@settings)
+      end
+
+      after do
+        File.delete(@settings_path) if File.exists?(@settings_path)
+      end
+
+      it 'should remove the file' do
+        Pinup::Settings.clear_settings
+        expect(File.exists?(@settings_path)).to be_false
+      end
+    end
+
+    describe 'if ther eis no settings file' do
+      before do
+        File.delete(@settings_path) if File.exists?(@settings_path)
+      end
+
+      it 'should not create a file' do
+        Pinup::Settings.clear_settings
+        expect(File.exists?(@settings_path)).to be_false
+      end
+    end
+  end
+
+  describe 'token' do
+    describe 'if there is invalid information' do
+      it 'should return nil for an empty username' do
+        expect(Pinup::Settings.token(nil, 'bar')).to be_nil
+        expect(Pinup::Settings.token('', 'bar')).to be_nil
+      end
+
+      it 'should return nil for an empty password' do
+        expect(Pinup::Settings.token('foo', nil)).to be_nil
+        expect(Pinup::Settings.token('foo', '')).to be_nil
+      end
+    end
+  end
 end
