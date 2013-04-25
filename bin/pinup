@@ -30,6 +30,7 @@ command :list do |c|
     # If you have any errors, just raise them
     # raise "that command made no sense"
 
+    Pinup::List.list_pins(options)
     puts "list command ran"
   end
 end
