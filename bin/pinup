@@ -43,8 +43,7 @@ command :open do |c|
   end
 end
 
-desc 'Authorize your user credentials'
-arg_name 'Validate your user credentials'
+desc 'Authorize your user credentials, you must run this first'
 command :authorize do |c|
   c.desc 'Get your Pinboard credentials from your netrc'
   c.switch :netrc
