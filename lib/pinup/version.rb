@@ -3,4 +3,5 @@ module Pinup
   SETTINGS     = File.expand_path('~/.pinup')
   PINBOARD_URL = 'pinboard.in'
   API_URL      = 'https://api.pinboard.in/v1'
+  JSON_PARAMS  = { format: 'json' }
 end
