@@ -200,5 +200,15 @@ describe Pinup::Settings do
         expect(Pinup::Settings.token('foo', '')).to be_nil
       end
     end
+
+    describe 'valid information' do
+      it 'should return the formatted token' do
+        name = 'Foo'
+        pass = 'Bar'
+        response = Pinup::Settings.token(name, pass)
+        result = response == "#{ name }:#{ pass }"
+        expect(result).to be_true
+      end
+    end
   end
 end
