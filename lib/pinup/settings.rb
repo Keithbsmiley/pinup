@@ -7,8 +7,6 @@ module Pinup
       File.open(SETTINGS, 'w') do |f|
         f.write(settings.to_yaml)
       end
-
-      File.chmod(0600, SETTINGS)
     end
 
     def self.read_settings
