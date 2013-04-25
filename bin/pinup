@@ -52,7 +52,7 @@ command :authorize do |c|
   c.flag :path
 
   c.action do |global_options,options,args|
-    Pinup::Authorize.authorize(options)
+    Pinup::Authorize.authorize_command(options)
   end
 end
 
