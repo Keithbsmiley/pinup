@@ -49,9 +49,14 @@ module Pinup
 
       request = Net::HTTP::Get.new(uri.request_uri)
       response = http.request(request)
-      if response.code != 200
+
+      if response.code != '200'
         puts "Invalid user credentials in #{ path }".red
         exit_now!(nil)
+      elsif DEFAULT_NETRC != path && !path.nil?
+        Pinup::Settings.write_settings({path: path})
+      else
+        Pinup::Settings.clear_settings
       end
     end
 
