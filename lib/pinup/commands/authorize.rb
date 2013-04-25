@@ -36,7 +36,7 @@ module Pinup
         exit_now!(nil)
       end
 
-      token = token(username, password)
+      token = Pinup::Settings.token(username, password)
       parameters = JSON_PARAMS
       parameters[:auth_token] = token
 
@@ -53,7 +53,7 @@ module Pinup
       if response.code != '200'
         puts "Invalid user credentials in #{ path }".red
         exit_now!(nil)
-      elsif DEFAULT_NETRC != path && !path.nil?
+      elsif !path.nil? && DEFAULT_NETRC != path
         Pinup::Settings.write_settings({path: path})
       else
         Pinup::Settings.clear_settings
@@ -62,10 +62,6 @@ module Pinup
 
     def self.authorize_credentials
       puts 'cred'
-    end
-
-    def self.token(username, password)
-      "#{ username }:#{ password }"
     end
   end
 end
