@@ -15,7 +15,7 @@ module Pinup
       end
 
       settings = YAML::load_file(SETTINGS)
-      if settings.nil? || settings.empty?
+      if !settings || settings.empty?
         return nil
       end
 
