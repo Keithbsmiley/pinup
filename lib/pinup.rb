@@ -5,4 +5,5 @@ require 'colored'
 # you just need to require this one file in your bin file
 #
 
+require 'pinup/settings'
 require 'pinup/commands/authorize'
