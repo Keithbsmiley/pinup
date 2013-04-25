@@ -1,0 +1,6 @@
+= pinup
+
+Describe your project here
+
+:include:pinup.rdoc
+

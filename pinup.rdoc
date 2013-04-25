@@ -1,0 +1,5 @@
+= pinup
+
+Generate this with
+    pinup rdoc
+After you have described your command line interface
