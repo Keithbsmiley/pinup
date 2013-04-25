@@ -22,7 +22,7 @@ module Pinup
         netrc = Netrc.read
       end
 
-      username, password = netrc['pinboard.in']
+      username, password = netrc[PINBOARD_URL]
       if username.nil? || password.nil?
         puts "Couldn't read credentials from #{ path }".red
         puts "Correct netrc syntax looks like:
