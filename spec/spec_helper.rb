@@ -6,7 +6,6 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 #
 
-require 'tempfile'
 require 'pinup'
 require 'pinup/version.rb'
 
