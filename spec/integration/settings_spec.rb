@@ -96,4 +96,67 @@ describe Pinup::Settings do
       end
     end
   end
+
+  describe 'get_token' do
+    describe 'if there is a token' do
+      before do
+        Pinup::Settings.write_settings(@options) 
+        @options = { path: @path, token: 'Foo:bar' }
+        Pinup::Settings.save_token(@options)
+      end
+
+      it 'should load the correct token' do
+        token = Pinup::Settings.get_token
+        @same = token == 'Foo:bar'
+        expect(@same).to be_true
+      end
+    end
+
+    describe 'if there is no token' do
+      before do
+        Pinup::Settings.write_settings({ path: File.expand_path('~/foobar') })
+      end
+
+      it 'should return nil' do
+        token = Pinup::Settings.get_token
+        expect(token).to be_nil
+      end
+    end
+
+    describe 'if there is only one attribute in the netrc' do
+      before do
+        @foopath = File.expand_path('~/foo')
+        Pinup::Settings.write_settings({ path: @foopath })
+        @netrc = Netrc.read(@foopath)
+      end
+
+      after do
+        File.delete(@foopath) if File.exists? @foopath
+      end
+
+      describe 'if there is only a username' do
+        before do
+          @netrc['pinboard.in'] = 'Foo', nil
+          @netrc.save
+        end
+
+        it 'should return nil' do
+          token = Pinup::Settings.get_token
+          expect(token).to be_nil
+        end
+      end
+
+      describe 'if there is only a password' do
+        before do
+          @netrc['pinboard.in'] = nil, 'Foo'
+          @netrc.save
+        end
+
+        it 'should return nil' do
+          token = Pinup::Settings.get_token
+          expect(token).to be_nil
+        end
+      end
+    end
+  end
 end

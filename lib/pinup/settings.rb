@@ -28,7 +28,7 @@ module Pinup
 
       if token.nil?
         puts 'Attempted to save empty token'.red
-        return
+        return nil
       end
 
       if options[:path]
@@ -38,7 +38,7 @@ module Pinup
       token_split = token.split(/:/)
       if token_split.count != 2
         puts "Invalid token #{ token_split.join(':') }".red
-        return
+        return nil
       end
 
       username = token_split.first
@@ -64,7 +64,7 @@ module Pinup
       token = token(username, password)
       if token.nil?
         puts "There are no credentials in #{ path }".red
-        exit_now!(nil)
+        return nil
       end
 
       return token
