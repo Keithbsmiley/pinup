@@ -48,6 +48,9 @@ command :authorize do |c|
   c.desc 'Get your Pinboard credentials from your netrc'
   c.switch :netrc
 
+  c.desc 'Custom netrc path'
+  c.flag :path
+
   c.action do |global_options,options,args|
     Pinup::Authorize.authorize(options)
   end
