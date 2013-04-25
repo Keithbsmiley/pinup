@@ -26,8 +26,6 @@ lib/pinup/commands/authorize.rb
   s.add_dependency('netrc', '~> 0.7.7')
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec', '~> 2.13.0')
-  s.add_development_dependency('cucumber', '~> 1.3.1')
   s.add_development_dependency('rdoc')
-  s.add_development_dependency('aruba')
   s.add_runtime_dependency('gli','2.5.6')
 end
