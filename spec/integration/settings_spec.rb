@@ -141,8 +141,7 @@ describe Pinup::Settings do
         end
 
         it 'should return nil' do
-          token = Pinup::Settings.get_token
-          expect(token).to be_nil
+          expect { Pinup::Settings.get_token }.to raise_error
         end
       end
 
