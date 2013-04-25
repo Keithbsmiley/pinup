@@ -11,13 +11,14 @@ spec = Gem::Specification.new do |s|
 # Add your other files here if you make them
   s.files = %w(
 bin/pinup
-lib/pinup/version.rb
 lib/pinup.rb
+lib/pinup/version.rb
+lib/pinup/settings.rb
 lib/pinup/commands/authorize.rb
   )
   s.require_paths << 'lib'
   s.has_rdoc = true
-  s.extra_rdoc_files = ['README.rdoc','pinup.rdoc']
+  s.extra_rdoc_files = ['README.rdoc', 'pinup.rdoc']
   s.rdoc_options << '--title' << 'pinup' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
   s.executables << 'pinup'
