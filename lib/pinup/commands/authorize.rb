@@ -12,7 +12,7 @@ module Pinup
       if options[:netrc]
         authorize_netrc(options)
       else
-        authorize_credentials
+        authorize_credentials(options)
       end
     end
 
@@ -32,23 +32,16 @@ module Pinup
 
             machine pinboard.in
               login username
-              password apitoken'.yellow
+              password apitoken
+        
+              NOTE: Just include the digits from the API token for the password'.yellow
         exit_now!(nil)
       end
 
       token = Pinup::Settings.token(username, password)
       parameters = JSON_PARAMS
       parameters[:auth_token] = token
-
-      uri = URI.parse("#{ API_URL }/user/api_token")
-      uri.query = URI.encode_www_form(JSON_PARAMS)
-
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-      request = Net::HTTP::Get.new(uri.request_uri)
-      response = http.request(request)
+      response = authorize(parameters)
 
       if response.code != '200'
         puts "Invalid user credentials in #{ path }".red
@@ -60,8 +53,43 @@ module Pinup
       end
     end
 
-    def self.authorize_credentials
-      puts 'cred'
+    def self.authorize_credentials(options)
+      # Ask for user and pass, save to passed or default netrc location
+      username = ask('Enter your username')
+      password = ask('Enter your password (not saved)')
+
+      parameters = { params: JSON_PARAMS, username: username, password: password }
+      response = authorize(parameters)
+
+      if response.code != '200'
+        puts 'Invalid user credentials'.red
+        exit_now!(nil)
+      else
+        Pinup::Settings.save_token({path: path})
+      end
     end
+
+    def self.ask(string)
+      print "#{ string }: "
+      gets.chomp
+    end
+
+    private
+
+      def self.authorize(options = {})
+        parameters = options[:params]   || {}
+        username   = options[:username] || {}
+        password   = options[:password] || {}
+
+        uri = URI.parse("#{ API_URL }/user/api_token")
+        uri.query = URI.encode_www_form(parameters)
+
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+        request = Net::HTTP::Get.new(uri.request_uri)
+        http.request(request)
+      end
   end
 end
