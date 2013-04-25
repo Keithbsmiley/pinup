@@ -60,4 +60,40 @@ describe Pinup::Settings do
       end
     end
   end
+
+  describe 'save_token' do
+    describe 'when no options are passed' do
+      it 'should exit' do
+        expect(Pinup::Settings.save_token).to equal(nil)
+      end
+    end
+
+    describe 'when an invalid token is passed' do
+      it 'should return' do
+        expect(Pinup::Settings.save_token({ token: 'foobar' })).to equal(nil)
+      end
+    end
+    
+    describe 'when a validish token and path is passed' do
+      before do
+        @options = { path: @path, token: 'Foo:bar' }
+        Pinup::Settings.save_token(@options)
+      end
+
+      it 'should return true' do
+        expect(Pinup::Settings.save_token(@options)).to equal(true)
+      end
+
+      it 'should create and save to the given file path' do
+        expect(File.exists?(@path)).to equal(true)
+      end
+
+      it 'should write the correct information to the file' do
+        @text = File.read(@path)
+        expect(@text).to match(/machine\s+pinboard\.in/)
+        expect(@text).to match(/login\s+Foo/)
+        expect(@text).to match(/password\s+bar/)
+      end
+    end
+  end
 end

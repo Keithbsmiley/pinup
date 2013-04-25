@@ -28,7 +28,7 @@ module Pinup
 
       if token.nil?
         puts 'Attempted to save empty token'.red
-        exit_now!(nil)
+        return
       end
 
       if options[:path]
@@ -38,7 +38,7 @@ module Pinup
       token_split = token.split(/:/)
       if token_split.count != 2
         puts "Invalid token #{ token_split.join(':') }".red
-        exit_now!(nil)
+        return
       end
 
       username = token_split.first
@@ -46,6 +46,9 @@ module Pinup
       
       netrc = Netrc.read(path)
       netrc[PINBOARD_URL] = username, password
+      netrc.save
+
+      return true
     end
 
     def self.get_token
