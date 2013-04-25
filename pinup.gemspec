@@ -13,7 +13,7 @@ spec = Gem::Specification.new do |s|
 bin/pinup
 lib/pinup/version.rb
 lib/pinup.rb
-lib/commands/authorize.rb
+lib/pinup/commands/authorize.rb
   )
   s.require_paths << 'lib'
   s.has_rdoc = true
@@ -21,6 +21,8 @@ lib/commands/authorize.rb
   s.rdoc_options << '--title' << 'pinup' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
   s.executables << 'pinup'
+  s.add_dependency('colored', '~> 1.2')
+  s.add_dependency('netrc', '~> 0.7.7')
   s.add_development_dependency('rake')
   s.add_development_dependency('rdoc')
   s.add_development_dependency('aruba')
