@@ -1,0 +1,77 @@
+#!/usr/bin/env ruby
+require 'gli'
+require 'pinup'
+
+include GLI::App
+
+program_desc 'Digest your Pinboard bookmarks in bulk'
+
+version Pinup::VERSION
+
+desc 'Only show unread items'
+switch [:unread]
+
+desc 'Only show untagged items'
+switch [:untagged]
+
+desc 'Describe list here'
+arg_name 'Describe arguments to list here'
+command :list do |c|
+  c.desc 'Describe a switch to list'
+  c.switch :s
+
+  c.desc 'Describe a flag to list'
+  c.default_value 'default'
+  c.flag :f
+  c.action do |global_options,options,args|
+
+    # Your command logic here
+     
+    # If you have any errors, just raise them
+    # raise "that command made no sense"
+
+    puts "list command ran"
+  end
+end
+
+desc 'Describe open here'
+arg_name 'Describe arguments to open here'
+command :open do |c|
+  c.action do |global_options,options,args|
+    puts "open command ran"
+  end
+end
+
+desc 'Authorize your user credentials'
+arg_name 'Validate your user credentials'
+command :authorize do |c|
+  c.desc 'Get your Pinboard credentials from your netrc'
+  c.switch :netrc
+
+  c.action do |global_options,options,args|
+    Pinup::Authorize.authorize(options)
+  end
+end
+
+pre do |global,command,options,args|
+  # Pre logic here
+  # Return true to proceed; false to abort and not call the
+  # chosen command
+  # Use skips_pre before a command to skip this block
+  # on that command only
+  true
+end
+
+post do |global,command,options,args|
+  # Post logic here
+  # Use skips_post before a command to skip this
+  # block on that command only
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+exit run(ARGV)
