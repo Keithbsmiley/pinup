@@ -56,8 +56,16 @@ module Pinup
       username = options[:username] || ask('Enter your username')
       password = options[:password] || ask('Enter your password (not saved)')
 
+      p "d #{ JSON_PARAMS }"
+      p "c #{ options }"
+      p "a #{ username }"
+      p "B #{ password }"
+
       parameters = { params: JSON_PARAMS, username: username, password: password }
       response = authorize(parameters)
+      p "E #{ parameters }"
+      p response.code
+      p response.body
 
       if response.code != '200'
         puts 'Invalid user credentials'.red
