@@ -51,10 +51,10 @@ module Pinup
       return true
     end
 
-    def self.authorize_credentials(options)
+    def self.authorize_credentials(options = {})
       # Ask for user and pass, save to passed or default netrc location
-      username = ask('Enter your username')
-      password = ask('Enter your password (not saved)')
+      username = options[:username] || ask('Enter your username')
+      password = options[:password] || ask('Enter your password (not saved)')
 
       parameters = { params: JSON_PARAMS, username: username, password: password }
       response = authorize(parameters)
@@ -63,7 +63,17 @@ module Pinup
         puts 'Invalid user credentials'.red
         return nil
       else
-        Pinup::Settings.save_token({path: path})
+        path = DEFAULT_NETRC
+        if options[:path]
+          path = File.expand_path(options[:path])
+        end
+
+        token = response.body['result']
+
+        options[:path]  = path
+        options[:token] = token
+
+        Pinup::Settings.save_token(options)
       end
     end
 

@@ -19,4 +19,16 @@ describe Pinup::Authorize do
       end
     end
   end
+
+  describe 'authorize_credentials' do
+    describe 'invalid credentials' do
+      it 'should return nil' do
+        expect(Pinup::Authorize.authorize_credentials({ username: 'foo', password: 'bar' })).to be_nil
+      end
+    end
+
+    describe 'valid credentials' do
+      # Note: this will only work if you set up netrc's for this testing
+    end
+  end
 end
