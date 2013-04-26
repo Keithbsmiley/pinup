@@ -35,7 +35,7 @@ module Pinup
 
       token = Pinup::Settings.token(username, password)
       puts token
-      parameters = JSON_PARAMS
+      parameters = JSON_PARAMS.dup
       parameters[:auth_token] = token
       response = authorize({ params: parameters })
 
@@ -56,16 +56,8 @@ module Pinup
       username = options[:username] || ask('Enter your username')
       password = options[:password] || ask('Enter your password (not saved)')
 
-      p "d #{ JSON_PARAMS }"
-      p "c #{ options }"
-      p "a #{ username }"
-      p "B #{ password }"
-
-      parameters = { params: JSON_PARAMS, username: username, password: password }
+      parameters = { params: JSON_PARAMS.dup, username: username, password: password }
       response = authorize(parameters)
-      p "E #{ parameters }"
-      p response.code
-      p response.body
 
       if response.code != '200'
         puts 'Invalid user credentials'.red
@@ -107,6 +99,10 @@ module Pinup
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
         request = Net::HTTP::Get.new(uri.request_uri)
+        if !username.nil? && !username.empty? && !password.nil? && !password.empty?
+          request.basic_auth(username, password)
+        end
+
         http.request(request)
       end
   end

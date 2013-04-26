@@ -32,6 +32,8 @@ describe Pinup::Authorize do
       it 'should return true' do
         netrc = Netrc.read
         username, password = netrc['test.pinboard.in']
+        expect(username).not_to be_nil
+        expect(password).not_to be_nil
         result = Pinup::Authorize.authorize_credentials({ username: username, password: password })
         expect(result).to be_true
       end
