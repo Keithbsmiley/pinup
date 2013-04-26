@@ -29,6 +29,12 @@ describe Pinup::Authorize do
 
     describe 'valid credentials' do
       # Note: this will only work if you set up netrc's for this testing
+      it 'should return true' do
+        netrc = Netrc.read
+        username, password = netrc['test.pinboard.in']
+        result = Pinup::Authorize.authorize_credentials({ username: username, password: password })
+        expect(result).to be_true
+      end
     end
   end
 end

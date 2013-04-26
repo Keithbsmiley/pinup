@@ -74,6 +74,8 @@ module Pinup
         options[:token] = token
 
         Pinup::Settings.save_token(options)
+
+        return true
       end
     end
 
