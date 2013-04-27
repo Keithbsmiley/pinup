@@ -71,4 +71,27 @@ describe Bookmark do
       expect(Bookmark.is_untagged('foo bar')).to be_false
     end
   end
+
+  describe 'to_s' do
+    before do
+      options = { 'href' => 'http://google.com', 'toread' => 'no', 'tags' => 'foo' }
+      @bookmark = Bookmark.new(options)
+      @response = @bookmark.to_s
+    end
+
+    it 'should contain the URL' do
+      result = @response.include? 'google.com'
+      expect(result).to be_true
+    end
+
+    it 'should contain unread settings' do
+      result = @response.include? 'Unread: false'
+      expect(result).to be_true
+    end
+
+    it 'should contain the URL' do
+      result = @response.include? 'Untagged: false'
+      expect(result).to be_true
+    end
+  end
 end
