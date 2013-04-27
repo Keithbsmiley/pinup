@@ -12,22 +12,20 @@ module Pinup
 
       parameters = JSON_PARAMS.dup
       parameters[:auth_token] = token
-      # parameters unread = true
-      # parameters untagged = true
 
       response = list_query(parameters)
       if response.code != '200'
         puts "Error getting bookmarks: #{ response.body }"
         return nil
       else
-        print_response(response.body)
+        print_response(response.body, unread, untagged)
       end
     end
 
     private
       
       def self.list_query(parameters)
-        uri = URI.parse("#{ API_URL }/posts/get")
+        uri = URI.parse("#{ API_URL }/posts/recent")
         uri.query = URI.encode_www_form(parameters)
 
         http = Net::HTTP.new(uri.host, uri.port)
@@ -38,7 +36,7 @@ module Pinup
         http.request(request)
       end
 
-      def self.print_response(response)
+      def self.print_response(response, unread, untagged)
         begin
           json = JSON.parse(response)
         rescue JSON::ParserError => e
@@ -47,7 +45,10 @@ module Pinup
         end
 
         json.each do |item|
-          # Print item
+          bookmark = Bookmark.new(item)
+          if bookmark.unread == unread || bookmark.untagged == untagged
+            puts bookmark.href
+          end
         end
       end
   end
