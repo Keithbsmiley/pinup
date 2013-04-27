@@ -18,7 +18,23 @@ module Pinup
         puts "Error getting bookmarks: #{ response.body }"
         return nil
       else
-        print_response(response.body, unread, untagged)
+        return response.body
+      end
+
+      def self.print_items(response, unread, untagged)
+        begin
+          json = JSON.parse(response)
+        rescue JSON::ParserError => e
+          puts "Failed to parse JSON: #{ e }"
+          exit
+        end
+
+        json.each do |item|
+          bookmark = Bookmark.new(item)
+          if bookmark.unread == unread || bookmark.untagged == untagged
+            puts bookmark.href
+          end
+        end
       end
     end
 
@@ -34,22 +50,6 @@ module Pinup
 
         request = Net::HTTP::Get.new(uri.request_uri)
         http.request(request)
-      end
-
-      def self.print_response(response, unread, untagged)
-        begin
-          json = JSON.parse(response)
-        rescue JSON::ParserError => e
-          puts "Failed to parse JSON: #{ e }"
-          exit
-        end
-
-        json.each do |item|
-          bookmark = Bookmark.new(item)
-          if bookmark.unread == unread || bookmark.untagged == untagged
-            puts bookmark.href
-          end
-        end
       end
   end
 end
