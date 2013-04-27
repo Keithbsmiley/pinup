@@ -1,7 +1,7 @@
 module Pinup
   class List
     def self.list_pins(options)
-      token = Pinup::Settings.get_token
+      Pinup::Queries.list_items
     end
   end
 end
