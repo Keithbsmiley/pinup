@@ -6,23 +6,21 @@ include GLI::App
 
 program_desc 'Digest your Pinboard bookmarks in bulk'
 
+desc 'Print the version of pinup'
 version Pinup::VERSION
 
-desc 'Only show unread items'
-switch [:unread]
-
-desc 'Only show untagged items'
-switch [:untagged]
-
-desc 'Describe list here'
-arg_name 'Describe arguments to list here'
+desc 'Print your bookmarks URLs to the console'
 command :list do |c|
-  c.desc 'Describe a switch to list'
-  c.switch :s
+  c.desc 'Only show unread items'
+  c.switch :unread
 
-  c.desc 'Describe a flag to list'
-  c.default_value 'default'
-  c.flag :f
+  c.desc 'Only show untagged items'
+  c.switch :untagged
+
+  c.desc 'Specify a number of items'
+  c.default_value '20'
+  c.flag [:n, :number]
+
   c.action do |global_options,options,args|
     Pinup::List.list_pins(options)
   end
