@@ -4,7 +4,7 @@ require 'json'
 
 module Pinup
   class Queries
-    def self.list_items(unread = true, untagged = true, count = 20)
+    def self.list_items(count = 20)
       token = Pinup::Settings.get_token
       if token.nil?
         return nil
