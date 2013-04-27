@@ -4,7 +4,7 @@ require 'json'
 
 module Pinup
   class Queries
-    def self.list_items(unread = true, untagged = true)
+    def self.list_items(unread = true, untagged = true, count = 20)
       token = Pinup::Settings.get_token
       if token.nil?
         return nil
@@ -12,6 +12,7 @@ module Pinup
 
       parameters = JSON_PARAMS.dup
       parameters[:auth_token] = token
+      parameters[:count]      = count
 
       response = list_query(parameters)
       if response.code != '200'
@@ -20,20 +21,20 @@ module Pinup
       else
         return response.body
       end
+    end
 
-      def self.print_items(response, unread, untagged)
-        begin
-          json = JSON.parse(response)
-        rescue JSON::ParserError => e
-          puts "Failed to parse JSON: #{ e }"
-          exit
-        end
+    def self.print_items(response, unread, untagged)
+      begin
+        json = JSON.parse(response)
+      rescue JSON::ParserError => e
+        puts "Failed to parse JSON: #{ e }"
+        exit
+      end
 
-        json.each do |item|
-          bookmark = Bookmark.new(item)
-          if bookmark.unread == unread || bookmark.untagged == untagged
-            puts bookmark.href
-          end
+      json.each do |item|
+        bookmark = Bookmark.new(item)
+        if bookmark.unread == unread || bookmark.untagged == untagged
+          puts bookmark.href
         end
       end
     end

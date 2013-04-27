@@ -17,8 +17,8 @@ command :list do |c|
   c.desc 'Only show untagged items'
   c.switch :untagged
 
-  c.desc 'Specify a number of items'
-  c.default_value '20'
+  c.desc 'Specify a number of items (max: 100)'
+  c.default_value 20
   c.flag [:n, :number]
 
   c.action do |global_options,options,args|
