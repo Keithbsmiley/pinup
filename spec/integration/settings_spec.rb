@@ -2,9 +2,10 @@ require_relative '../spec_helper'
 
 describe Pinup::Settings do
   before do
-    @path = File.expand_path('~/netrc_test')
-    @settings_path = File.expand_path('~/.pinup')
-    @options = { path: @path }
+    @path               = File.expand_path('~/netrc_test')
+    @settings_path      = File.expand_path('~/.pinup')
+    @options            = { path: @path }
+    @options_with_token = { path: @path, token: 'Foo:bar' }
   end
 
   after do
@@ -75,12 +76,11 @@ describe Pinup::Settings do
     
     describe 'when a validish token and path is passed' do
       before do
-        @options = { path: @path, token: 'Foo:bar' }
-        Pinup::Settings.save_token(@options)
+        Pinup::Settings.save_token(@options_with_token)
       end
 
       it 'should return true' do
-        expect(Pinup::Settings.save_token(@options)).to equal(true)
+        expect(Pinup::Settings.save_token(@options_with_token)).to eq(true)
       end
 
       it 'should create and save to the given file path' do
@@ -99,21 +99,21 @@ describe Pinup::Settings do
   describe 'get_token' do
     describe 'if there is a token' do
       before do
-        Pinup::Settings.write_settings(@options) 
-        @options = { path: @path, token: 'Foo:bar' }
-        Pinup::Settings.save_token(@options)
+        Pinup::Settings.write_settings(@options)
+        Pinup::Settings.save_token(@options_with_token)
       end
 
       it 'should load the correct token' do
         token = Pinup::Settings.get_token
-        @same = token == 'Foo:bar'
-        expect(@same).to be_true
+        result = token == 'Foo:bar'
+        expect(result).to be_true
       end
     end
 
     describe 'if there is no token' do
       before do
-        Pinup::Settings.write_settings({ path: File.expand_path('~/foobar') })
+        @local_path = File.expand_path('~/foobar')
+        Pinup::Settings.write_settings({ path: @local_path })
       end
 
       it 'should return nil' do
