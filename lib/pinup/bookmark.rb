@@ -3,11 +3,11 @@ class Bookmark
 
   def initialize(options = {})
     @href     = options['href']              unless options['href'].nil?
-    @unread   = is_unread(options['toread']) unless options['toread'].nil?
-    @untagged = is_untagged(options['tags']) unless options['tags'].nil?
+    @unread   = self.class.is_unread(options['toread']) unless options['toread'].nil?
+    @untagged = self.class.is_untagged(options['tags']) unless options['tags'].nil?
   end
 
-  def is_unread(attribute)
+  def self.is_unread(attribute)
     if attribute == 'yes'
       true
     else
@@ -15,7 +15,7 @@ class Bookmark
     end
   end
 
-  def is_untagged(attribute)
+  def self.is_untagged(attribute)
     if attribute.strip.empty?
       true
     else

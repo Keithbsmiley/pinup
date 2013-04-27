@@ -46,4 +46,29 @@ describe Bookmark do
       end
     end
   end
+
+  describe 'is_unread' do
+    it 'should return true only when toread is "yes"' do
+      expect(Bookmark.is_unread('yes')).to be_true
+    end
+
+    it 'should return false otherwise' do
+      expect(Bookmark.is_unread('false')).to be_false
+      expect(Bookmark.is_unread('no')).to be_false
+      expect(Bookmark.is_unread('foo')).to be_false
+    end
+  end
+
+
+  describe 'is_untagged' do
+    it 'should return true if there is nothing in the tag field' do
+      expect(Bookmark.is_untagged('   ')).to be_true
+      expect(Bookmark.is_untagged("\n \t \r")).to be_true
+    end
+
+    it 'should return false if there is something in the tag field' do
+      expect(Bookmark.is_untagged('foo')).to be_false
+      expect(Bookmark.is_untagged('foo bar')).to be_false
+    end
+  end
 end
