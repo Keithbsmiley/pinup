@@ -31,7 +31,9 @@ module Pinup
         exit
       end
 
-      json.each do |item|
+      items = json['posts']
+
+      items.each do |item|
         bookmark = Bookmark.new(item)
         if bookmark.unread == unread || bookmark.untagged == untagged
           puts bookmark.href
