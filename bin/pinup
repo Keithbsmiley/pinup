@@ -19,7 +19,7 @@ command :list do |c|
   c.default_value true
   c.switch :untagged
 
-  c.desc 'The number of recent items to search through (max: 100)'
+  c.desc 'The number of recent items to search through'
   c.default_value 20
   c.flag [:n, :number]
 

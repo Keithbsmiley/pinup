@@ -4,7 +4,7 @@ require 'json'
 
 module Pinup
   class Queries
-    def self.list_items(count = 20)
+    def self.list_items
       token = Pinup::Settings.get_token
       if token.nil?
         return nil
@@ -12,7 +12,6 @@ module Pinup
 
       parameters = JSON_PARAMS.dup
       parameters[:auth_token] = token
-      parameters[:count]      = count
 
       response = list_query(parameters)
       if response.code != '200'
@@ -23,7 +22,7 @@ module Pinup
       end
     end
 
-    def self.filter_items(response, unread, untagged)
+    def self.filter_items(response, unread, untagged, count)
       begin
         json = JSON.parse(response)
       rescue JSON::ParserError => e
@@ -32,6 +31,8 @@ module Pinup
       end
 
       items = json['posts']
+      p "AA #{ items }"
+      p "BB #{ json }"
       new_items = []
 
       items.each do |item|
@@ -67,7 +68,7 @@ module Pinup
     private
       
       def self.list_query(parameters)
-        uri = URI.parse("#{ API_URL }/posts/recent")
+        uri = URI.parse("#{ API_URL }/posts/all")
         uri.query = URI.encode_www_form(parameters)
 
         http = Net::HTTP.new(uri.host, uri.port)
