@@ -2,6 +2,58 @@ require_relative '../spec_helper'
 
 describe Pinup::Queries do
   describe 'list_items' do
+    describe 'number of items' do
+      describe 'an indescript number of items' do
+        before do
+          json   = JSON.parse(Pinup::Queries.list_items)
+          @items = json['posts']
+        end
+
+        it 'should return some number of items (my current default is 20)' do
+          result = @items.count > 0
+          expect(result).to be_true
+          expect(@items.count).to equal(20)
+        end
+      end
+
+      describe 'zero items' do
+        before do
+          json   = JSON.parse(Pinup::Queries.list_items(0))
+          @items = json['posts']
+        end
+
+        it 'should return the default number of items' do
+          result = @items.count > 0
+          expect(result).to be_true
+          expect(@items.count).to equal(15)
+        end
+      end
+
+      describe 'some number of items' do
+        before do
+          json   = JSON.parse(Pinup::Queries.list_items(33))
+          @items = json['posts']
+        end
+
+        it 'should return zero items' do
+          expect(@items.count).to equal(33)
+        end
+      end
+
+      describe 'over the maximum (currently 100) items' do
+        before do
+          json   = JSON.parse(Pinup::Queries.list_items(138))
+          @items = json['posts']
+        end
+
+        it 'should return the maximum amount of items' do
+          expect(@items.count).to equal(100)
+        end
+      end
+    end
+  end
+
+  describe 'filter_items' do
     describe 'read/unread items' do
       describe 'unread items' do
         before do
@@ -57,55 +109,20 @@ describe Pinup::Queries do
         end
       end
     end
+  end
 
-    describe 'number of items' do
-      describe 'an indescript number of items' do
-        before do
-          json   = JSON.parse(Pinup::Queries.list_items)
-          @items = json['posts']
-        end
+  describe 'item_string' do
+    before do
+      @item     = Bookmark.new({ "href" => "http://google.com" })
+      @item2    = Bookmark.new({ "href" => "http://github.com" })
+      @urls     = [ @item, @item2 ]
+      @response = Pinup::Queries.item_string(@urls)
+      @string   = "http://google.com\nhttp://github.com\n"
+    end
 
-        it 'should return some number of items (my current default is 20)' do
-          result = @items.count > 0
-          expect(result).to be_true
-          expect(@items.count).to equal(20)
-        end
-      end
-
-      describe 'zero items' do
-        before do
-          json   = JSON.parse(Pinup::Queries.list_items(0))
-          @items = json['posts']
-        end
-
-        it 'should return the default number of items' do
-          result = @items.count > 0
-          expect(result).to be_true
-          expect(@items.count).to equal(15)
-        end
-      end
-
-      describe 'some number of items' do
-        before do
-          json   = JSON.parse(Pinup::Queries.list_items(33))
-          @items = json['posts']
-        end
-
-        it 'should return zero items' do
-          expect(@items.count).to equal(33)
-        end
-      end
-
-      describe 'over the maximum (currently 100) items' do
-        before do
-          json   = JSON.parse(Pinup::Queries.list_items(138))
-          @items = json['posts']
-        end
-
-        it 'should return the maximum amount of items' do
-          expect(@items.count).to equal(100)
-        end
-      end
+    it 'should return a correctly formatted string' do
+      result = @response == @string
+      expect(result).to be_true
     end
   end
 end
