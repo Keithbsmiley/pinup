@@ -24,6 +24,6 @@ class Bookmark
   end
 
   def to_s
-    "URL: #{ @href } Unread: #{ self.unread } Untagged: #{ self.untagged }"
+    "<Bookmark: ##{ self.object_id } URL: #{ @href } Unread: #{ self.unread } Untagged: #{ self.untagged }>"
   end
 end
