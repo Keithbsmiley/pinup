@@ -30,6 +30,7 @@ module Pinup
         exit
       end
 
+      count     = 20 if count < 1
       new_items = []
 
       json.each do |item|
@@ -47,6 +48,10 @@ module Pinup
           if !bookmark.unread && !bookmark.untagged
             new_items << bookmark
           end
+        end
+
+        if new_items.count >= count
+          break
         end
       end
 

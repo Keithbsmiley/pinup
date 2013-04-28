@@ -71,6 +71,44 @@ describe Pinup::Queries do
         end
       end
     end
+
+    describe 'number of items' do
+      describe 'an invalid number' do
+        describe 'zero items' do
+          before do
+            items = Pinup::Queries.list_items
+            @filtered = Pinup::Queries.filter_items(items, false, false, 0)
+          end
+
+          it 'should return the default number of items' do
+            expect(@filtered.count).to equal(20)
+          end
+        end
+
+        describe 'negative items' do
+          before do
+            items = Pinup::Queries.list_items
+            @filtered = Pinup::Queries.filter_items(items, false, false, -9)
+          end
+
+          it 'should return the default number of items' do
+            expect(@filtered.count).to equal(20)
+          end
+        end
+      end
+
+      describe 'some number of unread items' do
+        before do
+          items = Pinup::Queries.list_items
+          @filtered = Pinup::Queries.filter_items(items, false, false, 14)
+        end
+
+        # Note this will only work if the default pinboard account has this man unread & untagged items
+        it 'should return the correct number of items' do
+          expect(@filtered.count).to equal(14)
+        end
+      end
+    end
   end
 
   describe 'item_string' do
