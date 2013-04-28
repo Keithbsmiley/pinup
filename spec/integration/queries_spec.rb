@@ -72,6 +72,7 @@ describe Pinup::Queries do
       end
     end
 
+    # Note these will only work if the default pinboard account unread & untagged items
     describe 'number of items' do
       describe 'an invalid number' do
         describe 'zero items' do
@@ -103,7 +104,6 @@ describe Pinup::Queries do
           @filtered = Pinup::Queries.filter_items(items, false, false, 14)
         end
 
-        # Note this will only work if the default pinboard account has this man unread & untagged items
         it 'should return the correct number of items' do
           expect(@filtered.count).to equal(14)
         end
