@@ -23,7 +23,16 @@ module Pinup
       end
     end
 
-    def self.print_items(response, unread, untagged)
+    def self.item_string(items)
+      item_output = ""
+      items.each do |item|
+        item_output << "#{ item.href }\n"
+      end
+
+      return item_output
+    end
+
+    def self.filter_items(response, unread, untagged)
       begin
         json = JSON.parse(response)
       rescue JSON::ParserError => e
@@ -32,13 +41,16 @@ module Pinup
       end
 
       items = json['posts']
+      new_items = []
 
       items.each do |item|
         bookmark = Bookmark.new(item)
-        if bookmark.unread == unread || bookmark.untagged == untagged
-          puts bookmark.href
+        if unread && bookmark.unread || untagged && bookmark.untagged
+          new_items << bookmark
         end
       end
+
+      return new_items
     end
 
     private
