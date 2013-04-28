@@ -3,11 +3,12 @@ require_relative '../spec_helper'
 describe Pinup::Queries do
   describe 'list_items' do
     before do
-      @items = Pinup::Queries.list_items
+      items  = Pinup::Queries.list_items
+      @posts = JSON.parse(items)
     end
 
     it 'shoud return some number of items' do
-      result = @items.count > 0
+      result = @posts.count > 0
       expect(result).to be_true
     end
   end

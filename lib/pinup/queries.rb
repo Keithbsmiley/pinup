@@ -30,12 +30,9 @@ module Pinup
         exit
       end
 
-      items = json['posts']
-      p "AA #{ items }"
-      p "BB #{ json }"
       new_items = []
 
-      items.each do |item|
+      json.each do |item|
         bookmark = Bookmark.new(item)
 
         if unread
