@@ -103,6 +103,8 @@ describe Pinup::Queries do
         end
 
         it 'should return only untagged items' do
+          result = @filtered.count > 0
+          expect(result).to be_true
           @filtered.each do |item|
             expect(item.untagged).to be_false
           end

@@ -36,8 +36,20 @@ module Pinup
 
       items.each do |item|
         bookmark = Bookmark.new(item)
-        if (unread && bookmark.unread) || (untagged && bookmark.untagged)
-          new_items << bookmark
+
+        if unread
+          if unread && bookmark.unread
+            new_items << bookmark
+          end
+        elsif untagged
+          if untagged && bookmark.untagged
+            new_items << bookmark
+          end
+        else
+          puts bookmark
+          if !bookmark.unread && !bookmark.untagged
+            new_items << bookmark
+          end
         end
       end
 
