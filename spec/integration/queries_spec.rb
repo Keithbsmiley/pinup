@@ -5,8 +5,8 @@ describe Pinup::Queries do
     describe 'read/unread items' do
       describe 'unread items' do
         before do
-          json      = JSON.parse(Pinup::Queries.list_items)
-          @filtered = Pinup::Queries.filter_items(json, true, false)
+          items     = Pinup::Queries.list_items
+          @filtered = Pinup::Queries.filter_items(items, true, false)
         end
 
         it 'should return only unread items' do
