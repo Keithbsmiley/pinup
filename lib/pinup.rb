@@ -1,8 +1,8 @@
-require 'pinup/version.rb'
-require 'colored'
-
-require 'pinup/settings'
-require 'pinup/queries'
 require 'pinup/bookmark'
+require 'pinup/queries'
+require 'pinup/settings'
+require 'pinup/version'
+
 require 'pinup/commands/authorize'
 require 'pinup/commands/list'
+require 'pinup/commands/open'

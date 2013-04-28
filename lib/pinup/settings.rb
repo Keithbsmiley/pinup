@@ -1,5 +1,6 @@
 require 'yaml'
 require 'netrc'
+require 'colored'
 
 module Pinup
   class Settings

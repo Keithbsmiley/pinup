@@ -2,6 +2,7 @@ require 'net/https'
 require 'uri'
 require 'json'
 require 'netrc'
+require 'colored'
 
 module Pinup
   class Authorize

@@ -13,7 +13,7 @@ module Pinup
       items_string = Pinup::Queries.item_string(filtered)
       urls         = items_string.split(/\n/)
 
-      item_urls.each do |url|
+      urls.each do |url|
         Launchy.open(url)
       end
 
