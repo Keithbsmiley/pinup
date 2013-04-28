@@ -23,15 +23,6 @@ module Pinup
       end
     end
 
-    def self.item_string(items)
-      item_output = ""
-      items.each do |item|
-        item_output << "#{ item.href }\n"
-      end
-
-      return item_output
-    end
-
     def self.filter_items(response, unread, untagged)
       begin
         json = JSON.parse(response)
@@ -45,12 +36,21 @@ module Pinup
 
       items.each do |item|
         bookmark = Bookmark.new(item)
-        if unread && bookmark.unread || untagged && bookmark.untagged
+        if (unread && bookmark.unread) || (untagged && bookmark.untagged)
           new_items << bookmark
         end
       end
 
       return new_items
+    end
+
+    def self.item_string(items)
+      item_output = ""
+      items.each do |item|
+        item_output << "#{ item.href }\n"
+      end
+
+      return item_output
     end
 
     private
