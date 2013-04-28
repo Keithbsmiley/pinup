@@ -12,9 +12,11 @@ version Pinup::VERSION
 desc 'Print your bookmarks URLs to the console'
 command :list do |c|
   c.desc 'Only show unread items'
+  c.default_value true
   c.switch :unread
 
   c.desc 'Only show untagged items'
+  c.default_value true
   c.switch :untagged
 
   c.desc 'Specify a number of items (max: 100)'
