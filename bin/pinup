@@ -9,7 +9,7 @@ program_desc 'Digest your Pinboard bookmarks in bulk'
 desc 'Print the version of pinup'
 version Pinup::VERSION
 
-desc 'Print your bookmarks URLs to the console'
+desc "Print your bookmarks URL's to the console"
 command :list do |c|
   c.desc 'Only show unread items'
   c.default_value true
@@ -28,11 +28,26 @@ command :list do |c|
   end
 end
 
-desc 'Describe open here'
-arg_name 'Describe arguments to open here'
+desc 'Open your bookmarks with the specified settings in your browser'
 command :open do |c|
+  c.desc 'Only show unread items'
+  c.default_value true
+  c.switch :unread
+
+  c.desc 'Only show untagged items'
+  c.default_value true
+  c.switch :untagged
+
+  c.desc 'Delete the items after opening them'
+  c.default_value false
+  c.switch :delete
+
+  c.desc 'The number of recent items to search through'
+  c.default_value 20
+  c.flag [:n, :number]
+
   c.action do |global_options,options,args|
-    puts "open command ran"
+    Pinup::Open.open_pins(options)
   end
 end
 
