@@ -99,7 +99,7 @@ module Pinup
 
       def self.delete_query(parameters)
         uri = URI.parse("#{ API_URL }/posts/delete")
-        uri.query = URI.encode_www_forms(parameters)
+        uri.query = URI.encode_www_form(parameters)
 
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true
