@@ -34,7 +34,6 @@ module Pinup
       end
 
       token = Pinup::Settings.token(username, password)
-      puts token
       parameters = JSON_PARAMS.dup
       parameters[:auth_token] = token
       response = authorize({ params: parameters })

@@ -46,7 +46,6 @@ module Pinup
             new_items << bookmark
           end
         else
-          puts bookmark
           if !bookmark.unread && !bookmark.untagged
             new_items << bookmark
           end
