@@ -15,10 +15,47 @@ describe Pinup::Queries do
           end
         end
       end
+
+      describe 'read items' do
+        before do
+          items = Pinup::Queries.list_items
+          @filtered = Pinup::Queries.filter_items(items, false, false)
+        end
+
+        it 'should return only read items' do
+          @filtered.each do |item|
+            expect(item.unread).to be_false
+          end
+        end
+      end
     end
 
-    describe 'untagged items' do
+    describe 'untagged/tagged items' do
+      describe 'untagged items' do
+        before do
+          items     = Pinup::Queries.list_items
+          @filtered = Pinup::Queries.filter_items(items, false, true)
+        end
 
+        it 'should return only untagged items' do
+          @filtered.each do |item|
+            expect(item.untagged).to be_true
+          end
+        end
+      end
+
+      describe 'tagged items' do
+        before do
+          items     = Pinup::Queries.list_items
+          @filtered = Pinup::Queries.filter_items(items, false, false)
+        end
+
+        it 'should return only untagged items' do
+          @filtered.each do |item|
+            expect(item.untagged).to be_false
+          end
+        end
+      end
     end
 
     describe 'number of items' do
