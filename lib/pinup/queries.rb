@@ -36,7 +36,7 @@ module Pinup
       json.each do |item|
         bookmark = Bookmark.new(item)
 
-        if should_show?(bookmark, unread, untagged)
+        if should_show(bookmark, unread, untagged)
           new_items << bookmark
         end
 
@@ -65,7 +65,7 @@ module Pinup
       end
     end
 
-    def self.should_show?(bookmark, unread, untagged)
+    def self.should_show(bookmark, unread, untagged)
       if unread && untagged
         if bookmark.unread || bookmark.untagged
           return true

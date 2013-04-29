@@ -112,8 +112,12 @@ describe Pinup::Settings do
 
     describe 'if there is no token' do
       before do
-        @local_path = File.expand_path('~/foobar')
+        @local_path = File.expand_path('~/foobarquux')
         Pinup::Settings.write_settings({ path: @local_path })
+      end
+
+      after do
+        File.delete(@local_path) if File.exists?(@local_path)
       end
 
       it 'should return nil' do

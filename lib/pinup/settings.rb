@@ -11,11 +11,11 @@ module Pinup
     end
 
     def self.read_settings
-      if !File.exists? SETTINGS
-        return nil
+      settings = nil
+      if File.exists?(SETTINGS)
+        settings = YAML::load_file(SETTINGS)
       end
 
-      settings = YAML::load_file(SETTINGS)
       if !settings || settings.empty?
         return nil
       end
