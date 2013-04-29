@@ -13,7 +13,7 @@ module Pinup
       parameters = JSON_PARAMS.dup
       parameters[:auth_token] = token
 
-      response = list_query(parameters)
+      response = pinboard_query(LIST_PATH, parameters)
       if response.code != '200'
         puts "Error getting bookmarks: #{ response.body }"
         return nil
@@ -74,6 +74,7 @@ module Pinup
       urls.each do |url|
         url_params = parameters.dup
         url_params[:url] = url
+        pinboard_query(DELETE_PATH, url_params)
         delete_query(url_params)
       end
     end
@@ -88,21 +89,9 @@ module Pinup
     end
 
     private
-      
-      def self.list_query(parameters)
-        uri = URI.parse("#{ API_URL }/posts/all")
-        uri.query = URI.encode_www_form(parameters)
 
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-        request = Net::HTTP::Get.new(uri.request_uri)
-        http.request(request)
-      end
-
-      def self.delete_query(parameters)
-        uri = URI.parse("#{ API_URL }/posts/delete")
+      def self.pinboard_query(path, parameters)
+        uri = URI.parse("#{ API_URL }/#{ path }")
         uri.query = URI.encode_www_form(parameters)
 
         http = Net::HTTP.new(uri.host, uri.port)

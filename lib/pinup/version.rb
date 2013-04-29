@@ -5,4 +5,6 @@ module Pinup
   API_URL       = 'https://api.pinboard.in/v1'
   JSON_PARAMS   = { format: 'json' }
   DEFAULT_NETRC = File.expand_path('~/.netrc')
+  DELETE_PATH   = 'posts/delete'
+  LIST_PATH     = 'posts/all'
 end
