@@ -1,3 +1,4 @@
+require 'io/console'
 require 'net/https'
 require 'uri'
 require 'json'
@@ -53,8 +54,10 @@ module Pinup
 
     def self.authorize_credentials(options = {})
       # Ask for user and pass, save to passed or default netrc location
+      # Reading from options hash for testing
       username = options[:username] || ask('Enter your username')
-      password = options[:password] || ask('Enter your password (not saved)')
+      print 'Enter your password (not saved): '
+      password = options[:password] || STDIN.noecho(&:gets).chomp
 
       parameters = { params: JSON_PARAMS.dup, username: username, password: password }
       response = authorize(parameters)
@@ -68,7 +71,9 @@ module Pinup
           path = File.expand_path(options[:path])
         end
 
-        token = response.body['result']
+        json   = JSON.parse(response.body)
+        digits = json['result']
+        token = Pinup::Settings.token(username, digits)
 
         options[:path]  = path
         options[:token] = token
