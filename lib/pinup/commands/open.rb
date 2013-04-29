@@ -3,10 +3,10 @@ require 'launchy'
 module Pinup
   class Open
     def self.open_pins(options = {})
-      unread   = options[:unread]      unless options[:unread].nil?
-      untagged = options[:untagged]    unless options[:untagged].nil?
-      count    = options[:number].to_i unless options[:number].nil?
-      delete   = options[:delete]      unless options[:delete].nil?
+      unread   = options[:unread]
+      untagged = options[:untagged]
+      count    = options[:number].to_i
+      delete   = options[:delete]
 
       items        = Pinup::Queries.list_items
       filtered     = Pinup::Queries.filter_items(items, unread, untagged, count)
