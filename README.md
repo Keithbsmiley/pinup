@@ -6,23 +6,24 @@ Pinup is a [RubyGem](http://rubygems.org/) for quickly getting through your [Pin
 
 First you need to setup your Pinboard credentials. Either:
 
-In your `~/.netrc` (get your token from <https://pinboard.in/settings/password> and split it at the `:`)
-
-```
-machine pinboard.in
-  login username
-  password yourtoken
-```
-
-OR run:
-
 ```
 pinup authorize
 ```
 
 This will ask you for your username and password, which are then used to get your user token from Pinboard and save it to your `~/.netrc`
 
-# Usage
+Or in your `~/.netrc` (get your token from <https://pinboard.in/settings/password> and split it at the `:`)
+
+```
+machine pinboard.in
+  login username
+  password token
+```
+
+Note that in the end these achieve the same result. Your Pinboard username and token (not password) are saved in your `~/.netrc` file. If you'd like to save it in a different location check out the `--path` argument with `pinup authorize -h`
+
+
+## Usage
 
 ```
 pinup open
@@ -52,3 +53,14 @@ Will show the most recent five bookmarks. You can also delete the bookmarks from
 ```
 pinup open --no-untagged --delete -n 5
 ```
+
+There is also a list command that takes the same arguments as `open` but instead of opening the URLs it just prints them one per line to the console. This way you could pipe the output in to another command for additional processing.
+
+## Installation
+
+```
+[sudo] gem install pinup
+```
+
+Pinup requires Ruby 1.9+ I recommend you install it with [rbenv](https://github.com/sstephenson/rbenv/). [RVM](https://rvm.io/) exists as well. Note that this is higher than the default installation on OS X. Ruby 1.8 is [no longer being supported](http://www.ruby-lang.org/en/news/2011/10/06/plans-for-1-8-7/) so I suggest you upgrade anyways.
+
