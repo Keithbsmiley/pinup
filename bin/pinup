@@ -6,50 +6,65 @@ include GLI::App
 
 program_desc 'Digest your Pinboard bookmarks in bulk'
 
+desc 'Print the version of pinup'
 version Pinup::VERSION
 
-desc 'Only show unread items'
-switch [:unread]
-
-desc 'Only show untagged items'
-switch [:untagged]
-
-desc 'Describe list here'
-arg_name 'Describe arguments to list here'
+desc "Print your bookmarks URL's to the console"
 command :list do |c|
-  c.desc 'Describe a switch to list'
-  c.switch :s
+  c.desc 'Only show unread items'
+  c.default_value true
+  c.switch :unread
 
-  c.desc 'Describe a flag to list'
-  c.default_value 'default'
-  c.flag :f
+  c.desc 'Only show untagged items'
+  c.default_value true
+  c.switch :untagged
+
+  c.desc 'Delete the items after opening them'
+  c.default_value false
+  c.switch :delete
+
+  c.desc 'The number of recent items to search through'
+  c.default_value 20
+  c.flag [:n, :number]
+
   c.action do |global_options,options,args|
-
-    # Your command logic here
-     
-    # If you have any errors, just raise them
-    # raise "that command made no sense"
-
-    puts "list command ran"
+    Pinup::List.list_pins(options)
   end
 end
 
-desc 'Describe open here'
-arg_name 'Describe arguments to open here'
+desc 'Open your bookmarks with the specified settings in your browser'
 command :open do |c|
+  c.desc 'Only show unread items'
+  c.default_value true
+  c.switch :unread
+
+  c.desc 'Only show untagged items'
+  c.default_value true
+  c.switch :untagged
+
+  c.desc 'Delete the items after opening them'
+  c.default_value false
+  c.switch :delete
+
+  c.desc 'The number of recent items to search through'
+  c.default_value 20
+  c.flag [:n, :number]
+
   c.action do |global_options,options,args|
-    puts "open command ran"
+    Pinup::Open.open_pins(options)
   end
 end
 
-desc 'Authorize your user credentials'
-arg_name 'Validate your user credentials'
+desc 'Authorize your user credentials, you must run this first'
 command :authorize do |c|
   c.desc 'Get your Pinboard credentials from your netrc'
   c.switch :netrc
 
+  c.desc 'Custom netrc path'
+  c.flag :path
+
   c.action do |global_options,options,args|
-    Pinup::Authorize.authorize(options)
+    Pinup::Authorize.authorize_command(options)
   end
 end
 

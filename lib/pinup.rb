@@ -1,7 +1,8 @@
-require 'pinup/version.rb'
-
-# Add requires for other files you add to your project here, so
-# you just need to require this one file in your bin file
-#
+require 'pinup/bookmark'
+require 'pinup/queries'
+require 'pinup/settings'
+require 'pinup/version'
 
 require 'pinup/commands/authorize'
+require 'pinup/commands/list'
+require 'pinup/commands/open'
