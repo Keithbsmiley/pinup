@@ -56,7 +56,7 @@ module Pinup
       # Ask for user and pass, save to passed or default netrc location
       # Reading from options hash for testing
       username = options[:username] || ask('Enter your username')
-      print 'Enter your password (not saved): '
+      print 'Enter your password (not saved): ' if options[:password].nil?
       password = options[:password] || STDIN.noecho(&:gets).chomp
 
       parameters = { params: JSON_PARAMS.dup, username: username, password: password }
