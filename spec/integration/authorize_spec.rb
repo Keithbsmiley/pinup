@@ -36,6 +36,43 @@ describe Pinup::Authorize do
         expect(Pinup::Authorize.authorize_netrc).to be_true
       end
     end
+
+    describe 'invalid credentials' do
+      before do
+        @path = File.expand_path('~/foobar') 
+        Pinup::Settings.write_settings({ path: @path })
+      end
+
+      after do
+        File.delete(@path) if File.exists?(@path)
+        Pinup::Settings.clear_settings
+      end
+
+      describe 'invalid token' do
+        before do
+          Pinup::Settings.save_token({ token: 'foo:bar', path: @path })
+        end
+
+        it 'should return nil' do
+          expect(Pinup::Authorize.authorize_netrc({ path: @path })).to be_nil
+        end
+      end
+    end
+    
+    describe 'valid credentials with custom path' do
+      before do
+        token = Pinup::Settings.get_token
+        @path = File.expand_path('~/foobar') 
+        Pinup::Settings.save_token({ token: token, path: @path })
+      end
+
+      it 'should write the settings' do
+        Pinup::Authorize.authorize_netrc({ path: @path })
+        settings = Pinup::Settings.read_settings
+        result = settings[:path] == @path
+        expect(result).to be_true
+      end
+    end
   end
 
   describe 'authorize_credentials' do
