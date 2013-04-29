@@ -36,12 +36,16 @@ module Pinup
       json.each do |item|
         bookmark = Bookmark.new(item)
 
-        if unread
-          if unread && bookmark.unread
+        if unread && untagged
+          if bookmark.unread || bookmark.untagged
+            new_items << bookmark
+          end
+        elsif unread
+          if bookmark.unread && !bookmark.untagged
             new_items << bookmark
           end
         elsif untagged
-          if untagged && bookmark.untagged
+          if bookmark.untagged && !bookmark.unread
             new_items << bookmark
           end
         else
