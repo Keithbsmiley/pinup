@@ -19,6 +19,10 @@ command :list do |c|
   c.default_value true
   c.switch :untagged
 
+  c.desc 'Delete the items after opening them'
+  c.default_value false
+  c.switch :delete
+
   c.desc 'The number of recent items to search through'
   c.default_value 20
   c.flag [:n, :number]

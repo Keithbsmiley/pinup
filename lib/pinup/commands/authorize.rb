@@ -44,7 +44,7 @@ module Pinup
         puts "Invalid user credentials in #{ path }".red
         return nil
       elsif !path.nil? && DEFAULT_NETRC != path
-        Pinup::Settings.write_settings({path: path})
+        Pinup::Settings.write_settings({ path: path })
       else
         Pinup::Settings.clear_settings
       end
