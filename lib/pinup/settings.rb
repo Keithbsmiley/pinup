@@ -46,7 +46,7 @@ module Pinup
       password = token_split.last
       
       netrc = Netrc.read(path)
-      netrc.new_item_prefix = "# This Entry was added automatically\n"
+      netrc.new_item_prefix = "\n# This Entry was added automatically\n"
       netrc[PINBOARD_URL] = username, password
       netrc.save
 
