@@ -7,9 +7,37 @@ describe Pinup::Queries do
       @posts = JSON.parse(items)
     end
 
-    it 'shoud return some number of items' do
+    it 'should return some number of items' do
       result = @posts.count > 0
       expect(result).to be_true
+    end
+
+    describe 'token issues' do
+      before do
+        @path = File.expand_path('~/foobar') 
+        Pinup::Settings.write_settings({ path: @path })
+      end
+
+      after do
+        File.delete(@path) if File.exists?(@path)
+        Pinup::Settings.clear_settings
+      end
+
+      describe 'no token' do
+        it 'should return nil' do
+          expect(Pinup::Queries.list_items).to be_nil
+        end
+      end
+
+      describe 'invalid token' do
+        before do
+          # Pinup::Settings.save_token({ token: 'foobar' })
+        end
+
+        it 'should return nil' do
+          expect(Pinup::Queries.list_items).to be_nil
+        end
+      end
     end
   end
 
@@ -110,6 +138,16 @@ describe Pinup::Queries do
 
         it 'should return the correct number of items' do
           expect(@filtered.count).to equal(14)
+        end
+      end
+    end
+
+    describe 'improper JSON' do
+      it 'should exit' do
+        begin
+          Pinup::Queries.filter_items('foobar', true, true, 10)
+        rescue SystemExit => e
+          expect(e).not_to be_nil
         end
       end
     end
