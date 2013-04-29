@@ -1,3 +1,4 @@
+# NOTE CI does not run all tests, some tests require valid Pinboard credentials in the netrc file
 language: ruby
 rvm:
   - 1.9.3
