@@ -1,5 +1,5 @@
 module Pinup
-  VERSION       = '0.1.1'
+  VERSION       = '0.1.2'
   SETTINGS      = File.expand_path('~/.pinup')
   PINBOARD_URL  = 'pinboard.in'
   API_URL       = 'https://api.pinboard.in/v1'
