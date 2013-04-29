@@ -13,8 +13,12 @@ module Pinup
       items_string = Pinup::Queries.item_string(filtered)
       urls         = items_string.split(/\n/)
 
-      urls.each do |url|
-        Launchy.open(url)
+      if count > 0 # For testing
+        urls.each do |url|
+          Launchy.open(url)
+        end
+      else
+        puts "You must specify more than #{ count } items"
       end
 
       if delete
