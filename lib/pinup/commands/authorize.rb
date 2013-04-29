@@ -55,7 +55,9 @@ module Pinup
     def self.authorize_credentials(options = {})
       # Ask for user and pass, save to passed or default netrc location
       # Reading from options hash for testing
-      username = options[:username] || ask('Enter your username')
+
+      print 'Enter your username: ' if options[:username].nil?
+      username = options[:username] || gets.chomp
       print 'Enter your password (not saved): ' if options[:password].nil?
       password = options[:password] || STDIN.noecho(&:gets).chomp
 
@@ -82,11 +84,6 @@ module Pinup
 
         return true
       end
-    end
-
-    def self.ask(string)
-      print "#{ string }: "
-      gets.chomp
     end
 
     private

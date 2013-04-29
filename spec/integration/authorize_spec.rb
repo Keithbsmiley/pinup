@@ -5,6 +5,24 @@ describe Pinup::Authorize do
     @netrc_path = File.expand_path('~/foobar')
   end
 
+  describe 'authorize_command' do
+    describe 'when netrc is true' do
+      it 'should call the correct method' do
+        options = { netrc: true }
+        Pinup::Authorize.should_receive(:authorize_netrc)
+        Pinup::Authorize.authorize_command(options)
+      end
+    end
+
+    describe 'when netrc is false' do
+      it 'should call the correct method' do
+        options = { netrc: false }
+        Pinup::Authorize.should_receive(:authorize_credentials)
+        Pinup::Authorize.authorize_command(options)
+      end
+    end
+  end
+
   describe 'authorize_netrc' do
     describe 'an empty netrc' do
       it 'should return nil' do
