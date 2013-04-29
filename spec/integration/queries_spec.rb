@@ -31,7 +31,7 @@ describe Pinup::Queries do
 
       describe 'invalid token' do
         before do
-          # Pinup::Settings.save_token({ token: 'foobar' })
+          Pinup::Settings.save_token({ token: 'foo:bar', path: @path })
         end
 
         it 'should return nil' do
