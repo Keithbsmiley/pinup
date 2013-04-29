@@ -43,7 +43,7 @@ module Pinup
       if response.code != '200'
         puts "Invalid user credentials in #{ path }".red
         return nil
-      elsif !path.nil? && DEFAULT_NETRC != path
+      elsif path && DEFAULT_NETRC != path
         Pinup::Settings.write_settings({ path: path })
       else
         Pinup::Settings.clear_settings
