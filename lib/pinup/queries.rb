@@ -61,7 +61,6 @@ module Pinup
         url_params = parameters.dup
         url_params[:url] = url
         pinboard_query(DELETE_PATH, url_params)
-        delete_query(url_params)
       end
     end
 
