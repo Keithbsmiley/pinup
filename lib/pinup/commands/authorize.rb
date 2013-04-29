@@ -17,9 +17,7 @@ module Pinup
 
     def self.authorize_netrc(options = {})
       path = DEFAULT_NETRC
-      if options[:path]
-        path = File.expand_path(options[:path])
-      end
+      path = File.expand_path(options[:path]) if options[:path]
 
       netrc = Netrc.read(path)
       username, password = netrc[PINBOARD_URL]
@@ -40,10 +38,11 @@ module Pinup
       parameters[:auth_token] = token
       response = authorize({ params: parameters })
 
-      if response.code != '200'
-        puts "Invalid user credentials in #{ path }".red
+      if !valid_credentials(response.code)
         return nil
-      elsif path && DEFAULT_NETRC != path
+      end
+
+      if path && DEFAULT_NETRC != path
         Pinup::Settings.write_settings({ path: path })
       else
         Pinup::Settings.clear_settings
@@ -55,7 +54,6 @@ module Pinup
     def self.authorize_credentials(options = {})
       # Ask for user and pass, save to passed or default netrc location
       # Reading from options hash for testing
-
       print 'Enter your username: ' if options[:username].nil?
       username = options[:username] || gets.chomp
       print 'Enter your password (not saved): ' if options[:password].nil?
@@ -64,14 +62,9 @@ module Pinup
       parameters = { params: JSON_PARAMS.dup, username: username, password: password }
       response = authorize(parameters)
 
-      if response.code != '200'
-        puts 'Invalid user credentials'.red
-        return nil
-      else
+      if valid_credentials(response.code)
         path = DEFAULT_NETRC
-        if options[:path]
-          path = File.expand_path(options[:path])
-        end
+        path = File.expand_path(options[:path]) if options[:path]
 
         json   = JSON.parse(response.body)
         digits = json['result']
@@ -83,6 +76,8 @@ module Pinup
         Pinup::Settings.save_token(options)
 
         return true
+      else
+        return nil
       end
     end
 
@@ -106,6 +101,15 @@ module Pinup
         end
 
         http.request(request)
+      end
+
+      def self.valid_credentials(code)
+        if code == '200' || code == 200
+          return true
+        end
+
+        puts 'Invalid user credentials'.red
+        return false
       end
   end
 end
