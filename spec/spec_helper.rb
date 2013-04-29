@@ -6,8 +6,10 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 #
 
-require 'coveralls'
-Coveralls.wear!
+if ENV['COVERALLS_RUN_LOCALLY']
+  require 'coveralls'
+  Coveralls.wear!
+end
 
 require 'pinup'
 require 'pinup/version.rb'
