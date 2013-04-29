@@ -36,22 +36,8 @@ module Pinup
       json.each do |item|
         bookmark = Bookmark.new(item)
 
-        if unread && untagged
-          if bookmark.unread || bookmark.untagged
-            new_items << bookmark
-          end
-        elsif unread
-          if bookmark.unread && !bookmark.untagged
-            new_items << bookmark
-          end
-        elsif untagged
-          if bookmark.untagged && !bookmark.unread
-            new_items << bookmark
-          end
-        else
-          if !bookmark.unread && !bookmark.untagged
-            new_items << bookmark
-          end
+        if should_show?(bookmark, unread, untagged)
+          new_items << bookmark
         end
 
         if new_items.count >= count
@@ -77,6 +63,28 @@ module Pinup
         pinboard_query(DELETE_PATH, url_params)
         delete_query(url_params)
       end
+    end
+
+    def self.should_show?(bookmark, unread, untagged)
+      if unread && untagged
+        if bookmark.unread || bookmark.untagged
+          return true
+        end
+      elsif unread
+        if bookmark.unread && !bookmark.untagged
+          return true
+        end
+      elsif untagged
+        if bookmark.untagged && !bookmark.unread
+          return true
+        end
+      else
+        if !bookmark.unread && !bookmark.untagged
+          return true
+        end
+      end
+
+      return false
     end
 
     def self.item_string(items)
