@@ -4,6 +4,7 @@ Pinup is a [RubyGem](http://rubygems.org/) for quickly getting through your [Pin
 
 [![Build Status](https://travis-ci.org/Keithbsmiley/pinup.png?branch=master)](https://travis-ci.org/Keithbsmiley/pinup)
 [![Code Climate](https://codeclimate.com/github/Keithbsmiley/pinup.png)](https://codeclimate.com/github/Keithbsmiley/pinup)
+[![Coverage Status](https://coveralls.io/repos/Keithbsmiley/pinup/badge.png?branch=master)](https://coveralls.io/r/Keithbsmiley/pinup)
 [![Dependency Status](https://gemnasium.com/Keithbsmiley/pinup.png)](https://gemnasium.com/Keithbsmiley/pinup)
 
 ## Authorization
