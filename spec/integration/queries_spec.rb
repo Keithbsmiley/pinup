@@ -13,12 +13,12 @@ describe Pinup::Queries do
     end
 
     describe 'token issues' do
-      before do
+      before(:each) do
         @path = File.expand_path('~/foobar') 
         Pinup::Settings.write_settings({ path: @path })
       end
 
-      after do
+      after(:each) do
         File.delete(@path) if File.exists?(@path)
         Pinup::Settings.clear_settings
       end

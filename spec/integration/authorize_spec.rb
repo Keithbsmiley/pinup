@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 
 describe Pinup::Authorize do
   before do
-    @netrc_path = File.expand_path('~/foobar')
+    @netrc_path = File.expand_path('~/foobarbaz')
   end
 
   describe 'authorize_command' do
