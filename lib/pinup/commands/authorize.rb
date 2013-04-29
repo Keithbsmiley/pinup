@@ -92,9 +92,9 @@ module Pinup
     private
 
       def self.authorize(options = {})
-        parameters = options[:params]   || {}
-        username   = options[:username] || {}
-        password   = options[:password] || {}
+        parameters = options[:params] || {}
+        username   = options[:username]
+        password   = options[:password]
 
         uri = URI.parse("#{ API_URL }/user/api_token")
         uri.query = URI.encode_www_form(parameters)
@@ -104,7 +104,7 @@ module Pinup
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
         request = Net::HTTP::Get.new(uri.request_uri)
-        if !username.nil? && !username.empty? && !password.nil? && !password.empty?
+        if username && password
           request.basic_auth(username, password)
         end
 
