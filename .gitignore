@@ -51,3 +51,4 @@ _yardoc
 doc/
 
 
+.coveralls.yml
