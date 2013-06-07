@@ -15,7 +15,9 @@ module Pinup
 
       if count > 0 # For testing
         urls.each do |url|
-          Launchy.open(url)
+          Launchy.open(url) do |exception|
+            urls.delete(url)
+          end
         end
       else
         puts "You must specify more than #{ count } items"
