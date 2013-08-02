@@ -16,6 +16,7 @@ module Pinup
       if count > 0 # For testing
         urls.each do |url|
           Launchy.open(url) do |exception|
+            puts "Error opening #{url} #{exception}"
             urls.delete(url)
           end
         end
@@ -24,6 +25,7 @@ module Pinup
       end
 
       if delete
+        puts "Deleting #{urls.count} items"
         Pinup::Queries.delete_items(urls)
       end
     end
