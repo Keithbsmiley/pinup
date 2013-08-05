@@ -22,7 +22,7 @@ module Pinup
       end
     end
 
-    def self.filter_items(response, unread, untagged, count)
+    def self.filter_items(response, unread, untagged, count = 20)
       begin
         json = JSON.parse(response)
       rescue JSON::ParserError => e
@@ -30,7 +30,6 @@ module Pinup
         exit
       end
 
-      count     = 20 if count < 1
       new_items = []
 
       json.each do |item|
@@ -56,9 +55,9 @@ module Pinup
 
       parameters = JSON_PARAMS.dup
       parameters[:auth_token] = token
+      url_params = parameters.dup
 
       urls.each do |url|
-        url_params = parameters.dup
         url_params[:url] = url
         pinboard_query(DELETE_PATH, url_params)
       end
