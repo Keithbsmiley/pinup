@@ -14,18 +14,18 @@ module Pinup
       urls         = items_string.split(/\n/)
 
       if count > 0 # For testing
-        urls.each do |url|
+        urls.delete_if do |url|
           Launchy.open(url) do |exception|
-            puts "Error opening #{url} #{exception}"
-            urls.delete(url)
+            true # if there is an exception remove it from the array so it is not deleted
           end
+
+          false
         end
       else
         puts "You must specify more than #{ count } items"
       end
 
       if delete
-        puts "Deleting #{urls.count} items"
         Pinup::Queries.delete_items(urls)
       end
     end
