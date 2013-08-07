@@ -1,6 +1,7 @@
 require 'net/https'
 require 'uri'
 require 'json'
+require 'typhoeus'
 
 module Pinup
   class Queries
@@ -55,12 +56,25 @@ module Pinup
 
       parameters = JSON_PARAMS.dup
       parameters[:auth_token] = token
-      url_params = parameters.dup
+
+      hydra = Typhoeus::Hydra.new
 
       urls.each do |url|
+        puts "Adding #{url}"
+        url_params = parameters.dup
         url_params[:url] = url
-        pinboard_query(DELETE_PATH, url_params)
+        # pinboard_query(DELETE_PATH, url_params)
+        request = Typhoeus::Request.new(
+          "#{ API_URL }/#{ DELETE_PATH }",
+          :params => url_params
+        )
+
+        p request
+        hydra.queue(request)
       end
+
+      # p hydra
+      hydra.run
     end
 
     def self.should_show(bookmark, unread, untagged)

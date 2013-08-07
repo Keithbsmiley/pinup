@@ -18,6 +18,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('colored', '~> 1.2')
   s.add_dependency('netrc', '~> 0.7.7')
   s.add_dependency('launchy', '~> 2.3.0')
+  s.add_dependency('typhoeus', '~> 0.6.3')
   s.add_development_dependency('rake')
   s.add_development_dependency('coveralls')
   s.add_development_dependency('rspec', '~> 2.13.0')
