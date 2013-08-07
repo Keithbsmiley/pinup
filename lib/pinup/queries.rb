@@ -14,12 +14,17 @@ module Pinup
       parameters = JSON_PARAMS.dup
       parameters[:auth_token] = token
 
-      response = pinboard_query(LIST_PATH, parameters)
-      if response.code != '200'
-        puts "Error getting bookmarks: #{ response.body }"
+      request = Typhoeus::Request.new(
+        "#{ API_URL }/#{ LIST_PATH }",
+        :params => parameters
+      )
+      response = request.run
+
+      if response.response_code != 200
+        puts "Error getting bookmarks: #{ response.response_body }"
         return nil
       else
-        return response.body
+        return response.response_body
       end
     end
 
@@ -56,24 +61,19 @@ module Pinup
 
       parameters = JSON_PARAMS.dup
       parameters[:auth_token] = token
-
       hydra = Typhoeus::Hydra.new
 
       urls.each do |url|
-        puts "Adding #{url}"
         url_params = parameters.dup
         url_params[:url] = url
-        # pinboard_query(DELETE_PATH, url_params)
         request = Typhoeus::Request.new(
           "#{ API_URL }/#{ DELETE_PATH }",
           :params => url_params
         )
 
-        p request
         hydra.queue(request)
       end
 
-      # p hydra
       hydra.run
     end
 
@@ -107,19 +107,5 @@ module Pinup
 
       return item_output
     end
-
-    private
-
-      def self.pinboard_query(path, parameters)
-        uri = URI.parse("#{ API_URL }/#{ path }")
-        uri.query = URI.encode_www_form(parameters)
-
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-        request = Net::HTTP::Get.new(uri.request_uri)
-        http.request(request)
-      end
   end
 end
