@@ -18,6 +18,7 @@ module Pinup
           Launchy.open(url) do |exception|
             true # if there is an exception remove it from the array so it is not deleted
           end
+          sleep(0.1)
 
           false
         end
