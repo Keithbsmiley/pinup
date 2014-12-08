@@ -1,5 +1,8 @@
 # pinup
 
+This has been superseded by
+[pinup](https://github.com/Keithbsmiley/pinup-py)
+
 Pinup is a [RubyGem](http://rubygems.org/) for quickly getting through your [Pinboard](https://pinboard.in) bookmarks. It allows you to open or list your bookmarks and delete them afterwards (if you'd like).
 
 [![Build Status](https://travis-ci.org/Keithbsmiley/pinup.png?branch=master)](https://travis-ci.org/Keithbsmiley/pinup)
